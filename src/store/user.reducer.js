@@ -3,7 +3,7 @@ import { userService } from '../services/user.service.js'
 
 const initialState = {
     user: userService.getLoggedinUser(),
-    users: [],
+    conversationFilter: {},
 }
 export function userReducer(state = initialState, action) {
     var newState = state;
@@ -19,6 +19,9 @@ export function userReducer(state = initialState, action) {
             break;
         case 'SET_USERS':
             newState = { ...state, users: action.users }
+            break;
+        case 'SET_CONVERSATION_FILTER':
+            newState = { ...state, conversationFilter: { ...state.conversationFilter, txt: action.txt } }
             break;
         default:
     }

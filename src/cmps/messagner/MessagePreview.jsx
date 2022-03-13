@@ -1,15 +1,11 @@
 import { useRef, useEffect } from "react";
-import { connect } from 'react-redux'
-import { setScroll } from '../../store/message.actions.js'
 
-
-
-export function _MessagePreview({ message, setScroll, isScroll, isLastMsg }) {
+export function MessagePreview({ message, setScroll, isScroll, isLastMsg }) {
     let lastMsgRef = useRef(null);
 
     useEffect(() => {
         if (isScroll && isLastMsg) {
-            lastMsgRef.current.scrollIntoView();
+            lastMsgRef.current.scrollIntoView({ behavior: "smooth" });
             setScroll(false);
         }
     }, [isScroll, setScroll])
@@ -34,16 +30,3 @@ export function _MessagePreview({ message, setScroll, isScroll, isLastMsg }) {
     )
 }
 
-
-function mapStateToProps(state) {
-    return {
-        messages: state.messageModule.messages,
-        isScroll: state.messageModule.isScroll,
-    }
-}
-
-const mapDispatchToProps = {
-    setScroll
-}
-
-export const MessagePreview = connect(mapStateToProps, mapDispatchToProps)(_MessagePreview)

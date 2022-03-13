@@ -1,6 +1,7 @@
 const initialState = {
     messages: [],
-    isScroll: false
+    isScroll: false,
+    isScrollToBottom: false
 }
 export function messageReducer(state = initialState, action) {
     var newState = state
@@ -12,8 +13,10 @@ export function messageReducer(state = initialState, action) {
             newState = { ...state, messages: [...state.messages, action.message] }
             break;
         case 'SET_SCROLL':
-
             newState = { ...state, isScroll: action.isScroll }
+            break;
+        case 'SET_SCROLL_TO_BOTTOM':
+            newState = { ...state, isScrollToBottom: action.isScroll }
             break;
     }
     return newState

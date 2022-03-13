@@ -17,8 +17,8 @@ function query(filterBy = {}) {
     // return storageService.query(STORAGE_KEY)
     return httpService.get(STORAGE_KEY, { params: { filterBy } });
 }
-function getById(messageId) {
-    return storageService.get(STORAGE_KEY, messageId)
+function getById(conversationId) {
+    return storageService.get(STORAGE_KEY, conversationId)
     //   return httpService.get(`message/${messageId}`);
 }
 function remove(messageId) {

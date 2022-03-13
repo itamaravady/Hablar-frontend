@@ -1,13 +1,13 @@
 import { conversationService } from "../services/conversation.service.js";
 import { userService } from "../services/user.service.js";
 
-export function loadConversation() {
+export function loadConversation(filterBy) {
     return async (dispatch) => {
         try {
-            const conversation = await conversationService.query();
+            const conversation = await conversationService.query(filterBy);
             dispatch({
                 type: 'SET_CONVERSATION',
-                conversation
+                conversation: conversation["0"]
             })
         }
         catch (err) {

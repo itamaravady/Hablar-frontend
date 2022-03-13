@@ -2,11 +2,12 @@ import { messageService } from "../services/message.service.js";
 import { userService } from "../services/user.service.js";
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
-export function loadMessages(conversation) {
+export function loadMessages(messages) {
     return (dispatch) => {
+        console.log('dispatching load messages')
         dispatch({
             type: 'SET_MESSAGES',
-            messages: conversation.messages
+            messages
         })
     }
 }
@@ -33,11 +34,18 @@ export function onAddMessage(conversationId, message, isAddLocally = false) {
         }
     }
 }
-export function setScroll(isScroll) {
+export function setScroll(isScroll, isToBottom = false) {
     return (dispatch) => {
-        dispatch({
-            type: 'SET_SCROLL',
-            isScroll
-        })
+        if (!isToBottom) {
+            dispatch({
+                type: 'SET_SCROLL',
+                isScroll
+            })
+        } else {
+            dispatch({
+                type: 'SET_SCROLL_TO_BOTTOM',
+                isScroll
+            })
+        }
     }
 }

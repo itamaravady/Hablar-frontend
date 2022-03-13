@@ -70,4 +70,13 @@ export function onLogout() {
         }
     }
 }
+export function setConversationFilter(filter) {
+    return (dispatch) => {
+        userService.logout()
+        dispatch({
+            type: 'SET_CONVERSATION_FILTER',
+            filter
+        })
+    }
+}
 

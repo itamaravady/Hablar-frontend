@@ -2,7 +2,7 @@ import { onAddConversation } from '../../store/conversation.actions'
 import { connect } from 'react-redux'
 
 // export function ConversationList({ conversations }) {
-export function _ConversationList({ onAddConversation }) {
+export function _ConversationList({ setScrollDown, loadConversation, onAddConversation }) {
 
 
     // if (!conversations.length) return <div>Search a contact to start a new conversation!</div>;
@@ -12,6 +12,7 @@ export function _ConversationList({ onAddConversation }) {
     return (
         <ul>list
             <button onClick={() => onAddConversation(conversation)}>Add conversation</button>
+            <button onClick={() => loadConversation({ _id: "6228d917d7c01a1f205f987f" })}>Load conversation</button>
         </ul>
         // <ul className="conversation-list clean-list">
         //     {conversation.map((conversation) => {
