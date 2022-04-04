@@ -15,11 +15,12 @@ export const conversationService = {
 
 function query(filterBy = {}) {
     // return storageService.query(STORAGE_KEY)
-    return httpService.get(STORAGE_KEY, { params: { filterBy } });
+    return httpService.get(STORAGE_KEY, { filterBy });
 }
 function getById(conversationId) {
-    return storageService.get(STORAGE_KEY, conversationId)
-    //   return httpService.get(`message/${messageId}`);
+    // return storageService.get(STORAGE_KEY, conversationId)
+    let filterBy = { _id: conversationId }
+    return httpService.get(STORAGE_KEY, { params: { filterBy } });
 }
 function remove(messageId) {
     return storageService.remove(STORAGE_KEY, messageId)

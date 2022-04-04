@@ -7,11 +7,18 @@ export const userService = {
     login,
     logout,
     signup,
+    save,
     getLoggedinUser,
+    refreshAccessToken,
     getById,
-
+    getUsers
 }
 
+async function getUsers(filterBy) {
+    // const user = await storageService.get(STORAGE_KEY, filterBy)
+    const users = await httpService.get('user', filterBy)
+    return users;
+}
 async function getById(userId) {
     const user = await storageService.get(STORAGE_KEY, userId)
     // const user = await httpService.get(`user/${userId}`)
@@ -19,19 +26,25 @@ async function getById(userId) {
 }
 
 async function login(userCred) {
-    // const users = await storageService.query(STORAGE_KEY)
-    // const user = users.find(user => user.username === userCred.username)
-    // if (user) return _saveLocalUser(user)
+    try {
+        const { user, accessToken, refreshToken } = await httpService.post('auth/login', userCred);
+        _saveLocalUser(user);
+        httpService.setTokens(accessToken, refreshToken);
+        return { user, accessToken, refreshToken }
+        // socketService.emit('set-user-socket', user._id);
+    } catch (err) {
+        console.log('err:', err);
+    }
 
-
-    const user = await httpService.post('auth/login', userCred)
-    // socketService.emit('set-user-socket', user._id);
-    if (user) return _saveLocalUser(user)
 }
 async function signup(userCred) {
-    // const user = await storageService.post(STORAGE_KEY, userCred)
-    // return user
+
     const user = await httpService.post('auth/signup', userCred)
+    // socketService.emit('set-user-socket', user._id);
+    return _saveLocalUser(user)
+}
+async function save(user) {
+    user = await httpService.put('user/:id', user)
     // socketService.emit('set-user-socket', user._id);
     return _saveLocalUser(user)
 }
@@ -47,5 +60,10 @@ function _saveLocalUser(user) {
 
 function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER) || 'null')
+}
+
+async function refreshAccessToken(refreshToken) {
+    const res = await httpService.get('auth/refresh', { refreshToken });
+    return res.accessToken;
 }
 

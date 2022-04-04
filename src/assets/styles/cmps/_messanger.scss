@@ -18,12 +18,11 @@
     .new-message-form {
         display: flex;
         padding-top: 10px;
-        gap: 5px;
         input {
             flex-grow: 1;
             border: none;
-            border-radius: 2rem;
-            padding: 8px;
+            border-radius: 2rem 0 0 2rem;
+            padding-inline: 15px;
             font-size: 1.125rem;
             margin: 0;
         }
@@ -32,7 +31,10 @@
         }
         button {
             width: 100px;
-            border-radius: 4px;
+            height: 100%;
+            border-radius: 0 2rem 2rem 0;
+            font-size: 1.125rem;
+            margin: 0;
         }
     }
 }

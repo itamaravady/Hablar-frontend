@@ -5,7 +5,10 @@ const initialState = {
 export function conversationReducer(state = initialState, action) {
     var newState = state
     switch (action.type) {
-        case 'SET_CONVERSATION':
+        case 'SET_CONVERSATIONS':
+            newState = { ...state, conversations: [...action.conversations] }
+            break;
+        case 'SET_CURR_CONVERSATION':
             newState = { ...state, currConversation: { ...action.conversation } }
             break;
         case 'ADD_CONVERSATION':
