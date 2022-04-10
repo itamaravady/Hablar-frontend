@@ -1,6 +1,7 @@
 import jwtDecode from "jwt-decode";
 import { axiosPrivate } from "../api/axios";
 import { default as axios } from "../api/axios";
+import { socketService } from "./socket.service";
 
 const baseUrl = process.env.NODE_ENV === 'production'
     ? () => '/api/'
@@ -24,6 +25,21 @@ export const httpService = {
     },
     setTokens(accessToken, refreshToken) {
         _setTokens(accessToken, refreshToken);
+    },
+    socketSetup(accessToken) {
+        socketService.setup(accessToken);
+    },
+    socketOn(evName, cb) {
+        socketService.on(evName, cb);
+    },
+    socketOff(evName, cb) {
+        socketService.off(evName, cb);
+    },
+    socketEmit(evName, date) {
+        socketService.emit(evName, date);
+    },
+    socketTerminate() {
+        socketService.terminate();
     }
 }
 var accessToken;
@@ -37,6 +53,7 @@ async function ajax(endpoint, method = 'GET', data = null) {
         if (isExpired) {
             const res = await axios.get(`//localhost:3031/api/auth/refresh/?refreshToken=${refreshToken}`);
             accessToken = res.data.accessToken;
+            socketService.setup(accessToken);
         }
         axiosPrivate.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
 

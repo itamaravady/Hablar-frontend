@@ -55,7 +55,7 @@ export function _SearchUser({ addConversation, resetUsers, loadUsers, currUser, 
                     value={searchTerm}
                     onChange={handleChange} />
             </form>
-            <section className="search-result">
+            <section className={`search-result ${conversationFilter.txt !== '' ? 'active' : ''}`}>
                 <UserList onAddConversation={onAddConversation} currUser={currUser} users={users} />
             </section>
         </>

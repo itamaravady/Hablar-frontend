@@ -26,10 +26,8 @@ export function onAddMessage(conversationId, message, isAddLocally = false) {
                 type: 'SET_SCROLL',
                 isScroll: true
             })
-            showSuccessMsg('Message added')
         }
         catch (err) {
-            showErrorMsg('Cannot add message')
             console.log('Cannot add message', err)
         }
     }

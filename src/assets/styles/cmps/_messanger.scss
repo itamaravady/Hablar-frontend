@@ -1,40 +1,66 @@
+.conversation-header{
+    height:57px;
+    background-color: lighten($clr3,5);
+    display: flex;
+    padding: 15px;
+    .conversation-user-name{
+        align-self: center;
+        text-transform: capitalize;
+    }
+}
+.messanger-wrapper{
+    padding: 0 0 15px 15px;
+    flex-grow:1;
+    display: flex;
+    flex-direction: column;
+}
 .messanger-container {
-    background-color: $clr4;
+    background-color: lighten($clr3,10);
     width: 100vw;
     height: 100vh;
-    padding: 10px;
     position: relative;
     display: flex;
     flex-direction: column;
+
     .message-list {
         height: 350px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+        align-items: flex-end;
         gap: 10px;
         height: 350px;
         overflow-y: scroll;
     }
     .new-message-form {
         display: flex;
-        padding-top: 10px;
-        input {
+        height:32px;
+
+        textarea {
+            resize:none;
             flex-grow: 1;
-            border: none;
+            border: solid 1px rgb(233, 233, 233);
             border-radius: 2rem 0 0 2rem;
             padding-inline: 15px;
             font-size: 1.125rem;
             margin: 0;
         }
-        input:focus {
+        textarea:focus {
             outline: none;
         }
         button {
-            width: 100px;
+            width: 50px;
             height: 100%;
             border-radius: 0 2rem 2rem 0;
-            font-size: 1.125rem;
-            margin: 0;
+            margin:0;
+            padding:5px;
+            .send-logo{
+                height:25px;
+                width:100%;
+            }
+            &:hover .send-logo{
+                transform: scale(1.2);
+            }
         }
     }
 }
@@ -47,17 +73,53 @@ main {
 
 .message-preview {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: $clr5;
-    color: $clr6;
+    background-color: $clr3;
+    color: $clr7;
     max-width: 500px;
     width: fit-content;
     padding: 5px;
     word-wrap: break-word;
     border-radius: 4px;
     transition: all 0.2s;
+    position:relative;
+
+&.recieved::before{
+    height:12px;
+    width: 15px;
+    position:absolute;
+    bottom:0px;
+    left:-10px;
+    border-style: solid;
+    border-width: 0 0 12px 15px;
+border-color: transparent transparent $clr3 transparent;
+    content:".";
+    color:transparent;
+}
+&.sent::before{
+    height:0;
+    width: 15px;
+    position:absolute;
+    bottom:0px;
+    right:-25px;
+    border-style: solid;
+    border-width: 12px 0 0 15px;
+    border-color: transparent transparent transparent $clr4;
+    content:".";
+    color:transparent;
+}
+    &.sent{
+        align-self: flex-start;
+        background-color: $clr4;
+    }
+    &.recieved{
+        margin-inline-end:15px;
+    }
     .message-time {
         font-style: italic;
         margin-inline-end: 10px;
-        color: $clr3;
+        color: $clr8;
+        font-size: 0.8rem;
+        position:relative;
+        top:5px;
     }
 }

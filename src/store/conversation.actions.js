@@ -19,20 +19,21 @@ export function loadConversation(filterBy) {
 export function addConversation(conversation, currUser) {
     return async (dispatch, getState) => {
         try {
-            const savedConversation = await conversationService.save(conversation);
             let state = getState();
-            const existConversation = state.conversationModule.conversations.filter(conver => conver._id === savedConversation._id)
+            const savedConversation = await conversationService.save(conversation);
+            const existConversation = currUser.conversations.filter(conver => conver._id === savedConversation._id);
             console.log('existConversation:', existConversation);
+            dispatch({
+                type: 'SET_CURR_CONVERSATION',
+                conversation: savedConversation
+            })
             if (existConversation.length) return;
 
             dispatch({
                 type: 'ADD_CONVERSATION',
                 conversation: savedConversation
             });
-            dispatch({
-                type: 'SET_CURR_CONVERSATION',
-                conversation: savedConversation
-            })
+
             delete savedConversation.messages;
             const user = { ...currUser, conversations: [savedConversation, ...currUser.conversations] }
             let savedUser = await userService.save(user);

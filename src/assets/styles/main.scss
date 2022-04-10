@@ -14,13 +14,11 @@
 // Views
 @import "views/about-us";
 @import "views/home-page";
-@import "views/car-app";
-@import "views/review-app";
 @import "views/login-signup";
 
 // Components
-@import "cmps/app-header";
 @import "cmps/app-footer";
 @import "cmps/messanger";
 @import "cmps/user-msg";
 @import "cmps/user-preview";
+@import "cmps/_conversations";

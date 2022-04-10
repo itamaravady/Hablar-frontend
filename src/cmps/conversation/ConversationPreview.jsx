@@ -1,12 +1,8 @@
-export function ConversationPreview({ conversation, loadConversation }) {
+export function ConversationPreview({ conversation, loadConversation, user }) {
     let filterBy = { _id: conversation._id }
-    return <div>
-        <ul className="clean-list conversation-users-list">
-            {conversation.users.map(user => {
-                return <li onClick={() => loadConversation(filterBy)} key={user._id}>
-                    {user.fullname}
-                </li>
-            })}
-        </ul>
-    </div>
+    return <li className="clean-list conversation-user-preview"
+        onClick={() => loadConversation(filterBy)}
+        key={conversation._id}>
+        {conversation.users.find(currUser => currUser._id !== user._id).fullname}
+    </li>
 }

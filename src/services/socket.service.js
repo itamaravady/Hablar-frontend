@@ -3,14 +3,16 @@ import io from 'socket.io-client'
 const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030'
 export const socketService = createSocketService()
 
-socketService.setup()
+// socketService.setup()
 
 
 function createSocketService() {
   var socket = null;
   const socketService = {
-    setup() {
-      socket = io(baseUrl)
+    setup(accessToken) {
+      socket = io(baseUrl, {
+        query: { accessToken }
+      })
     },
     on(eventName, cb) {
       socket.on(eventName, cb)

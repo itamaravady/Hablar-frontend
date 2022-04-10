@@ -1,7 +1,8 @@
 import { useRef, useEffect } from "react";
 import { MessagePreview } from "./MessagePreview"
+import { utilService } from "../../services/util.service";
 
-export function MessageList({ isScroll, isScrollToBottom, setScroll, messages }) {
+export function MessageList({ user, isScroll, isScrollToBottom, setScroll, messages }) {
     const bottomScrollRef = useRef(null);
     useEffect(() => {
         if (isScrollToBottom) {
@@ -17,9 +18,10 @@ export function MessageList({ isScroll, isScrollToBottom, setScroll, messages })
             {messages.map((msg, i) => {
                 let isLastMsg = false;
                 if (i === messages.length - 1) isLastMsg = true;
-
+                const currKey = utilService.makeId(6);
                 return <MessagePreview
-                    key={msg._id}
+                    sentClass={msg.toUserId !== user._id ? 'sent' : 'recieved'}
+                    key={currKey}
                     message={msg}
                     isLastMsg={isLastMsg}
                     setScroll={setScroll}

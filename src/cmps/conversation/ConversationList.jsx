@@ -23,6 +23,7 @@ export function _ConversationList({ user, loadConversation }) {
                         conversation={conversation}
                         currUserId={user._id}
                         loadConversation={loadConversation}
+                        user={user}
                     />
                 })}
             </ul>

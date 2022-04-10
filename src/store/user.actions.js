@@ -47,7 +47,6 @@ export function onLogin(credentials) {
                 type: 'SET_REFRESH_TOKEN',
                 refreshToken
             });
-            // console.log('refreshToken:', refreshToken);
         } catch (err) {
             showErrorMsg('Cannot login')
             console.log('Cannot login', err)
@@ -95,17 +94,16 @@ export function setConversationFilter(filter) {
     }
 }
 
-export function refreshAuthToken() {
-    // return async (dispatch, getState) => {
-    //     const refreshToken = getState().userModule.refreshToken;
-    //     // console.log('refreshToken:', refreshToken);
-    //     // const accessToken = await userService.refreshAccessToken(refreshToken);
-    //     // console.log('accessToken:', accessToken);
-    //     httpService.jwtIntercept(refreshToken);
-    //     dispatch({
-    //         type: 'SET_ACCESS_TOKEN',
-    //         accessToken,
-    //     });
-    // }
+export function setAccessToken(accessToken) {
+    return async (dispatch) => {
+        //     // console.log('refreshToken:', refreshToken);
+        //     // const accessToken = await userService.refreshAccessToken(refreshToken);
+        //     // console.log('accessToken:', accessToken);
+        //     httpService.jwtIntercept(refreshToken);
+        dispatch({
+            type: 'SET_ACCESS_TOKEN',
+            accessToken,
+        });
+    }
 }
 

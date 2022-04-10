@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { ReactComponent as SendLogo } from '../../assets/svg/send.svg';
 
 export function AddMessageForm({ submit }) {
     const [txt, setTxt] = useState('')
@@ -17,12 +17,12 @@ export function AddMessageForm({ submit }) {
 
     return (
         <form className='new-message-form' onSubmit={onSubmit}>
-            <input
+            <textarea
                 className='txt-input'
-                type="text"
+                // type="text"
                 value={txt}
                 onChange={handleChange} />
-            <button>send</button>
+            <button><SendLogo className='send-logo' /></button>
         </form>
     )
 }
