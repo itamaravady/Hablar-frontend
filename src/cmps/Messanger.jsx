@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { onAddMessage, loadMessages, setScroll } from '../store/message.actions.js'
-import { loadConversation } from '../store/conversation.actions.js'
-import { loadUsers } from '../store/user.actions'
+import { loadConversation, addConversation, addConversationOnNewMessage } from '../store/conversation.actions.js'
+import { loadUsers, onLogout, getUserByName } from '../store/user.actions'
 import { setConversationFilter } from '../store/user.actions.js'
 import { useEffect } from 'react'
 import { AddMessageForm } from './messagner/AddMessageForm.jsx';
@@ -12,13 +12,34 @@ import { useNavigate } from 'react-router-dom';
 
 import { httpService } from '../services/http.service.js'
 import { ConversationHeader } from './user/ConversationHeader.jsx'
+import { UserPanel } from './user/UserPanel.jsx'
 
 
-export function _Messanger({ conversationFilter, setConversationFilter, loadMessages, onAddMessage, currConversation, messages, user, users, accessToken, setScroll, isScroll, isScrollToBottom }) {
+export function _Messanger({ addConversation, conversationFilter, setConversationFilter, loadMessages, onAddMessage, currConversation, messages, user, users, accessToken, setScroll, isScroll, isScrollToBottom, onLogout, getUserByName }) {
     const navigate = useNavigate();
     useEffect(() => {
         if (!user._id) {
             navigate('authenticate')
+        } else {
+            (async () => {
+                const botUser = await getUserByName({ username: 'bot' });
+
+                const botConversation = {
+                    isBot: true,
+                    users: [
+                        {
+                            _id: user._id,
+                            fullname: user.fullname
+                        },
+                        {
+                            _id: botUser._id,
+                            fullname: botUser.fullname
+                        }
+                    ],
+                    messages: [],
+                };
+                addConversation(botConversation, user);
+            })();
         }
     }, [user])
 
@@ -29,25 +50,29 @@ export function _Messanger({ conversationFilter, setConversationFilter, loadMess
                 setScroll(true, true);
             }
         })()
-    }, [currConversation])
+    }, [currConversation, loadMessages, setScroll])
 
     useEffect(() => {
         httpService.socketSetup(accessToken);
-
-    }, [accessToken])
+        return () => {
+            httpService.socketTerminate();
+        }
+    }, [accessToken]);
 
     useEffect(() => {
-        httpService.socketSetup(accessToken);
+
         httpService.socketEmit('join conversation', user._id);
         httpService.socketOn('new message', ({ message, conversationId }) => {
-            if (conversationId === currConversation._id) {
-                onAddMessage(conversationId, message, true);
+            if (conversationId === currConversation._id) onAddMessage(conversationId, message, true)
+            else if (!user.conversations.find(conver => conver._id === conversationId)) {
+                console.log('not the curr conversation');
+                addConversationOnNewMessage(conversationId, user);
             }
         })
         return () => {
-            httpService.socketOff('new message')
+            httpService.socketOff('new message');
         }
-    }, [currConversation])
+    }, [currConversation, onAddMessage, user])
 
 
     function submit(txt) {
@@ -59,12 +84,13 @@ export function _Messanger({ conversationFilter, setConversationFilter, loadMess
             timestamp: Date.now()
         }
         onAddMessage(currConversation._id, message);
-        httpService.socketEmit('new message', { message, conversationId: currConversation._id });
+        let socketEv = currConversation.isBot ? 'new bot message' : 'new message'
+        httpService.socketEmit(socketEv, { message, conversationId: currConversation._id });
     }
-
     return (
         <>
             <section className="conversation-container">
+                <UserPanel user={user} onLogout={onLogout} />
                 <SearchUser users={users} conversationFilter={conversationFilter} setConversationFilter={setConversationFilter} />
                 <ConversationList />
             </section>
@@ -99,9 +125,12 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     onAddMessage,
+    addConversation,
     loadConversation,
     loadMessages,
     loadUsers,
+    getUserByName,
+    onLogout,
     setScroll,
     setConversationFilter,
 }

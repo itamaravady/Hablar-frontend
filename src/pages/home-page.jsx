@@ -1,20 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Bot } from '../cmps/bot/Bot'
 import { Messanger } from '../cmps/Messanger'
 
 
-function _HomePage() {
+function _HomePage({ user }) {
 
     return (
+
+
         <main className='chat-container'>
+            {!!(user._id) && <Bot />}
             <Messanger />
         </main>
+
     )
 }
 
 function mapStateToProps(state) {
     return {
-        count: state.userModule.count
+        user: state.userModule.user
     }
 }
 

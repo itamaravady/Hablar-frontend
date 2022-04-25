@@ -1,8 +1,6 @@
 import { userService } from "../services/user.service.js";
 import { showErrorMsg } from '../services/event-bus.service.js'
-import { httpService } from "../services/http.service.js";
 
-// import { socketService } from "../services/socket.service.js";
 
 export function loadUsers(filterBy) {
     return async dispatch => {
@@ -14,22 +12,32 @@ export function loadUsers(filterBy) {
         }
     }
 }
+export function getUserByName(username) {
+    return async () => {
+        try {
+            return userService.getUserByName(username)
+        } catch (err) {
+            console.log('UserActions: err in loadUsers', err)
+        };
+    }
+}
+
 export function resetUsers() {
     return dispatch => {
         dispatch({ type: 'SET_USERS', users: [] })
     }
 }
 
-export function removeUser(userId) {
-    return async dispatch => {
-        try {
-            await userService.remove(userId)
-            dispatch({ type: 'REMOVE_USER', userId })
-        } catch (err) {
-            console.log('UserActions: err in removeUser', err)
-        }
-    }
-}
+// export function removeUser(userId) {
+//     return async dispatch => {
+//         try {
+//             await userService.remove(userId)
+//             dispatch({ type: 'REMOVE_USER', userId })
+//         } catch (err) {
+//             console.log('UserActions: err in removeUser', err)
+//         }
+//     }
+// }
 
 export function onLogin(credentials) {
     return async (dispatch) => {
@@ -39,6 +47,38 @@ export function onLogin(credentials) {
                 type: 'SET_USER',
                 user
             });
+            dispatch(_setTokens(accessToken, refreshToken));
+
+        } catch (err) {
+            console.log('err:', err);
+        }
+    }
+}
+
+
+export function onSignup(credentials) {
+    return async (dispatch) => {
+        try {
+            const { user, accessToken, refreshToken } = await userService.signup(credentials)
+            console.log('user,accessToken,refreshToken:', user, accessToken, refreshToken);
+            dispatch({
+                type: 'SET_USER',
+                user
+            });
+            dispatch(_setTokens(accessToken, refreshToken));
+
+        } catch (err) {
+            showErrorMsg('Cannot signup')
+            console.log('Cannot signup', err)
+        }
+
+    }
+}
+
+
+function _setTokens(accessToken, refreshToken) {
+    return (dispatch) => {
+        try {
             dispatch({
                 type: 'SET_ACCESS_TOKEN',
                 accessToken
@@ -48,28 +88,11 @@ export function onLogin(credentials) {
                 refreshToken
             });
         } catch (err) {
-            showErrorMsg('Cannot login')
-            console.log('Cannot login', err)
+            console.log('err:', err);
         }
     }
 }
 
-
-export function onSignup(credentials) {
-    return async (dispatch) => {
-        try {
-            const user = await userService.signup(credentials)
-            dispatch({
-                type: 'SET_USER',
-                user
-            })
-        } catch (err) {
-            showErrorMsg('Cannot signup')
-            console.log('Cannot signup', err)
-        }
-
-    }
-}
 
 export function onLogout() {
     return async (dispatch) => {

@@ -8,31 +8,32 @@ const STORAGE_KEY = 'message'
 
 export const messageService = {
     query,
-    getById,
     save,
     remove,
+    getBotMessage
 }
 
 function query(filterBy = {}) {
     // return storageService.query(STORAGE_KEY)
     return httpService.get(STORAGE_KEY, { params: { filterBy } });
 }
-function getById(messageId) {
-    return storageService.get(STORAGE_KEY, messageId)
-    //   return httpService.get(`message/${messageId}`);
+function getBotMessage() {
+    // return storageService.query(STORAGE_KEY)
+    return httpService.get(`${STORAGE_KEY}/bot`);
 }
+
 function remove(messageId) {
     return storageService.remove(STORAGE_KEY, messageId)
     //   return httpService.delete(`message/${messageId}`);
 
 }
 function save(conversationId, message) {
+
     if (message._id) {
-        // return storageService.put(STORAGE_KEY, message)
         return httpService.put(`${STORAGE_KEY}/${message._id}`, message);
 
     } else {
-        // return storageService.post(STORAGE_KEY, message
+
         return httpService.post(STORAGE_KEY, { conversationId, message });
     }
 }

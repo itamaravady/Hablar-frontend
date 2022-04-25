@@ -10,7 +10,7 @@ export function LoginSignupForm({ onLogin, onSignup, setIsSignup }) {
             if (onLogin) await onLogin(credentials);
             else if (onSignup) await onSignup(credentials);
             clearState();
-            navigate('/')
+            navigate('/');
         }
         catch (err) {
             throw new Error(err);

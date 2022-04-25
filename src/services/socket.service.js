@@ -3,9 +3,6 @@ import io from 'socket.io-client'
 const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030'
 export const socketService = createSocketService()
 
-// socketService.setup()
-
-
 function createSocketService() {
   var socket = null;
   const socketService = {
@@ -26,7 +23,7 @@ function createSocketService() {
       socket.emit(eventName, data)
     },
     terminate() {
-      socket = null
+      socket.disconnect();
     }
   }
   return socketService

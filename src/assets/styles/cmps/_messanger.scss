@@ -23,6 +23,12 @@
     flex-direction: column;
 
     .message-list {
+        padding-top: 10px;
+        &.empty-list::after{
+            content:'No messages yet!';
+        align-self: center;
+        padding-top: 25px;
+        }
         height: 350px;
         flex-grow: 1;
         display: flex;
@@ -82,6 +88,7 @@ main {
     border-radius: 4px;
     transition: all 0.2s;
     position:relative;
+    display: flex;
 
 &.recieved::before{
     height:12px;

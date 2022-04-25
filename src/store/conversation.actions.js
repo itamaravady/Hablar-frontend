@@ -17,12 +17,10 @@ export function loadConversation(filterBy) {
     }
 }
 export function addConversation(conversation, currUser) {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         try {
-            let state = getState();
             const savedConversation = await conversationService.save(conversation);
             const existConversation = currUser.conversations.filter(conver => conver._id === savedConversation._id);
-            console.log('existConversation:', existConversation);
             dispatch({
                 type: 'SET_CURR_CONVERSATION',
                 conversation: savedConversation
@@ -36,6 +34,30 @@ export function addConversation(conversation, currUser) {
 
             delete savedConversation.messages;
             const user = { ...currUser, conversations: [savedConversation, ...currUser.conversations] }
+            let savedUser = await userService.save(user);
+            dispatch({
+                type: 'SET_USER',
+                user: savedUser
+            });
+
+        }
+        catch (err) {
+            console.log('Cannot add conversation', err)
+        }
+    }
+}
+export function addConversationOnNewMessage(conversationId, currUser) {
+
+    return async (dispatch) => {
+        try {
+            const conversation = await conversationService.query({ _id: conversationId });
+            dispatch({
+                type: 'ADD_CONVERSATION',
+                conversation
+            });
+
+            delete conversation.messages;
+            const user = { ...currUser, conversations: [conversation, ...currUser.conversations] }
             let savedUser = await userService.save(user);
             dispatch({
                 type: 'SET_USER',

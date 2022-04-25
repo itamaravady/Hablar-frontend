@@ -36,7 +36,7 @@ export function _SearchUser({ addConversation, resetUsers, loadUsers, currUser, 
         addConversation(conversation, currUser);
         resetUsers();
         setTerm('');
-    }
+    };
 
     useEffect(() => {
         setConversationFilter({ txt: debounceTerm });

@@ -4,7 +4,6 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
 export function loadMessages(messages) {
     return (dispatch) => {
-        console.log('dispatching load messages')
         dispatch({
             type: 'SET_MESSAGES',
             messages
@@ -46,4 +45,12 @@ export function setScroll(isScroll, isToBottom = false) {
             })
         }
     }
+}
+
+export function onGetBotMessage() {
+    return async (dispatch) => {
+        return messageService.getBotMessage();
+    }
+
+
 }
