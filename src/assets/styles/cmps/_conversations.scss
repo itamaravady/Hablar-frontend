@@ -14,23 +14,30 @@
         outline:none;
     }
 }
+.user-panel-container{
+    z-index: 10;
+background-color: #fff;
+display: flex;
+justify-content: space-evenly;
+padding:10px;
 
+.btn-logout{
+    font-size: 1.1rem;
+}
+}
 .search-result{
-    transition:left 0.5s;
-    position:absolute;
-    left:-100%;
+    transition:min-height 0.5s;
     width:100%;
     z-index:5;
     background-color: lighten($clr4,5);
-    padding:10px;
-    height:100%;
+    padding:0;
+    min-height:0;
 
-    ul{
-        position:absolute;
-        top:70px;
-}
+    
     &.active{
-        left:0;
+        min-height:100px;
+        padding:10px;
+
     }
 
 }

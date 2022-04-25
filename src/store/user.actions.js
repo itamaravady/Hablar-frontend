@@ -97,7 +97,7 @@ function _setTokens(accessToken, refreshToken) {
 export function onLogout() {
     return async (dispatch) => {
         try {
-            await userService.logout()
+            await userService.logout();
             dispatch({
                 type: 'SET_USER',
                 user: null

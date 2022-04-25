@@ -49,9 +49,9 @@ async function save(user) {
     user = await httpService.put('user/:id', user)
     return _saveLocalUser(user)
 }
-async function logout() {
+function logout() {
     console.log('logging out');
-    return await httpService.post('auth/logout')
+    return httpService.post('auth/logout')
 }
 
 function _saveLocalUser(user) {
