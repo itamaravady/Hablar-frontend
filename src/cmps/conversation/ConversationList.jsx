@@ -10,7 +10,7 @@ export function _ConversationList({ user, loadConversation }) {
             let filterBy = { _id: user.conversations[0]._id }
             loadConversation(filterBy)
         }
-    }, [])
+    }, [user.conversations[0]])
     return (
 
         (!user?.conversations?.length) ?

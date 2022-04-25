@@ -19,15 +19,21 @@ export function _Bot({ getUserByName, accessToken, currConversation, onGetBotMes
             const botUser = await getUserByName({ username: 'bot' });
             console.log('botUser:', botUser);
             httpService.socketEmit('join conversation', botUser._id);
-
+        })();
+    }, []);
+    useEffect(() => {
+        (async () => {
             httpService.socketOn('new bot message', async ({ message, conversationId }) => {
+                console.log('conversationId , currConversation._id:', conversationId, currConversation);
 
                 if (conversationId === currConversation._id) {
 
                     //send req for bot message and Emit new message with the recieved txt
                     const longestWord = message.txt.split(/\W/).sort((w1, w2) => w1.length - w2.length).pop();
                     const txtArr = await onGetBotMessage();
-                    const txt = `Well, I don't know about "${longestWord}", but as ${txtArr[0].author} said, ${txtArr[0].quote}`;
+                    const txt = `Well, I don't know about "${longestWord}", but as ${txtArr[0].author} said, "${txtArr[0].quote}"`;
+                    console.log(txt);
+
                     const toUser = currConversation.users.filter(currUser => currUser._id === user._id);
                     const toUserId = toUser[0]._id;
                     const newMessage = {
@@ -41,9 +47,9 @@ export function _Bot({ getUserByName, accessToken, currConversation, onGetBotMes
             })
         })();
         return () => {
-            httpService.socketOff('new message')
+            httpService.socketOff('new bot message')
         }
-    }, []);
+    }, [currConversation._id]);
 
     return (
         <span className='bot-cmp'></span>

@@ -39,6 +39,13 @@ export function _Messanger({ addConversation, conversationFilter, setConversatio
                     messages: [],
                 };
                 addConversation(botConversation, user);
+                const botMessage = {
+                    toUserId: user._id,
+                    txt: 'Hi!',
+                    timestamp: Date.now()
+                }
+
+                onAddMessage(botConversation._id, botMessage);
             })();
         }
     }, [user])

@@ -3,7 +3,6 @@ import { MessagePreview } from "./MessagePreview"
 import { utilService } from "../../services/util.service";
 
 export const MessageList = React.memo(({ user, isScroll, isScrollToBottom, setScroll, messages }) => {
-    console.log('message list rendered');
     const bottomScrollRef = useRef(null);
     useEffect(() => {
         if (isScrollToBottom) {
