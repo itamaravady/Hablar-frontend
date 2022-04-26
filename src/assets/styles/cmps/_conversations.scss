@@ -16,11 +16,14 @@
 }
 .user-panel-container{
     z-index: 10;
-background-color: #fff;
+background-color: lighten($clr8,40);
 display: flex;
 justify-content: space-evenly;
 padding:10px;
-
+height:57px;
+&>*{
+    align-self:center;
+}
 .btn-logout{
     font-size: 1.1rem;
 }
@@ -32,7 +35,11 @@ padding:10px;
     background-color: lighten($clr4,5);
     padding:0;
     min-height:0;
+overflow-y: hidden;
+&:hover{
+overflow-y: scroll;
 
+}
     
     &.active{
         min-height:100px;
@@ -47,4 +54,5 @@ padding:10px;
     position:relative;
     display: flex;
     flex-direction: column;
+    max-height:100vh;
 }
