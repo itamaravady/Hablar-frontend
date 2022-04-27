@@ -44,7 +44,7 @@ export const httpService = {
 }
 var accessToken;
 var refreshToken;
-async function ajax(endpoint, method = 'GET', data = null) {
+async function ajax(endpoint, method = 'GET', data = {}) {
     try {
         if (accessToken) {
             const user = jwtDecode(accessToken);

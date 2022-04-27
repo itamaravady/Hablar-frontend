@@ -94,7 +94,7 @@ function _setTokens(accessToken, refreshToken) {
 }
 
 
-export function onLogout() {
+export function logout() {
     return async (dispatch) => {
         try {
             await userService.logout();

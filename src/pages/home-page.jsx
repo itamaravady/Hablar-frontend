@@ -10,7 +10,7 @@ function _HomePage({ user }) {
 
 
         <main className='chat-container'>
-            {!!(user._id) && <Bot />}
+            {!!(user?._id) && <Bot />}
             <Messanger />
         </main>
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { onAddMessage, loadMessages, setScroll } from '../store/message.actions.js'
 import { loadConversation, addConversation, addConversationOnNewMessage } from '../store/conversation.actions.js'
-import { loadUsers, onLogout, getUserByName } from '../store/user.actions'
+import { loadUsers, logout, getUserByName } from '../store/user.actions'
 import { setConversationFilter } from '../store/user.actions.js'
 import { useEffect } from 'react'
 import { AddMessageForm } from './messagner/AddMessageForm.jsx';
@@ -15,7 +15,7 @@ import { ConversationHeader } from './user/ConversationHeader.jsx'
 import { UserPanel } from './user/UserPanel.jsx'
 
 
-export function _Messanger({ addConversation, conversationFilter, setConversationFilter, loadMessages, onAddMessage, currConversation, messages, user, users, accessToken, setScroll, isScroll, isScrollToBottom, onLogout, getUserByName }) {
+export function _Messanger({ addConversation, conversationFilter, setConversationFilter, loadMessages, onAddMessage, currConversation, messages, user, users, accessToken, setScroll, isScroll, isScrollToBottom, logout, getUserByName }) {
     const navigate = useNavigate();
     useEffect(() => {
         if (!user._id) {
@@ -36,16 +36,15 @@ export function _Messanger({ addConversation, conversationFilter, setConversatio
                             fullname: botUser.fullname
                         }
                     ],
-                    messages: [],
+                    messages: [
+                        {
+                            toUserId: user._id,
+                            txt: 'Hi!',
+                            timestamp: Date.now()
+                        }
+                    ]
                 };
                 addConversation(botConversation, user);
-                const botMessage = {
-                    toUserId: user._id,
-                    txt: 'Hi!',
-                    timestamp: Date.now()
-                }
-
-                onAddMessage(botConversation._id, botMessage);
             })();
         }
     }, [user])
@@ -81,6 +80,10 @@ export function _Messanger({ addConversation, conversationFilter, setConversatio
         }
     }, [currConversation, onAddMessage, user])
 
+
+    function onLogout() {
+        navigate('authenticate')
+    }
 
     function submit(txt) {
         const toUser = currConversation.users.filter(currUser => currUser._id !== user._id);
@@ -137,7 +140,7 @@ const mapDispatchToProps = {
     loadMessages,
     loadUsers,
     getUserByName,
-    onLogout,
+    logout,
     setScroll,
     setConversationFilter,
 }
